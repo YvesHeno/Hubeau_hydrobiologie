@@ -13,11 +13,12 @@ library(cowplot)
 library(DT)
 library(httr)#utiliser POST pour calcul i2m2 à partir du SEEE
 library(trend)
-source(file="../Hubeau_valorisationhydrobiologie/R/Fonctions_unitaires_appel_API.R")
-source(file = "../Hubeau_valorisationhydrobiologie/R/mk_st_by_group.R")
-source(file = "../Hubeau_valorisationhydrobiologie/R/Mann_kendall_div.r")
-source(file = "../Hubeau_valorisationhydrobiologie/R/Seee_to_df.R")
-source(file = "../Hubeau_valorisationhydrobiologie/R/Calcule_I2M2_métriques.R")
+
+source(file="../Hubeau_hydrobiologie/R/Fonctions_unitaires_appel_API.R")
+source(file = "../Hubeau_hydrobiologie/R/mk_st_by_group.R")
+source(file = "../Hubeau_hydrobiologie/R/Mann_kendall_div.r")
+source(file = "../Hubeau_hydrobiologie/R/Seee_to_df.R")
+source(file = "../Hubeau_hydrobiologie/R/Calcule_I2M2_métriques.R")
 
 
 
@@ -30,9 +31,9 @@ dep <- c('22','29','35','56') # choix des numéros de département
 ## I2M2 et métriques
 ##l'interrogation de l'API est couteuse
 # aussi , on le fait une fois et on enregistre les donnees dans le fichier Multi_indice_minv
-if (file.exists("../Hubeau_valorisationhydrobiologie/Data/Multi_indice_minv.Rdata"))
+if (file.exists("../Hubeau_hydrobiologie/Data/Multi_indice_minv.Rdata"))
 {
-  load("../Hubeau_valorisationhydrobiologie/Data/Multi_indice_minv.Rdata")
+  load("../Hubeau_hydrobiologie/Data/Multi_indice_minv.Rdata")
 } else
 {
    Multi_indice_minv <- map_df(dep,f_get_minv_departement)%>%
@@ -40,7 +41,7 @@ if (file.exists("../Hubeau_valorisationhydrobiologie/Data/Multi_indice_minv.Rdat
     select("code_station_hydrobio","libelle_station_hydrobio","date_prelevement","code_indice","resultat_indice","latitude","longitude","code_departement","annee") %>% 
     arrange(code_station_hydrobio,annee)
   
-  save(Multi_indice_minv,file="../Hubeau_valorisationhydrobiologie/Data/Multi_indice_minv_all.Rdata")
+  save(Multi_indice_minv,file="../Hubeau_hydrobiologie/Data/Multi_indice_minv_all.Rdata")
 }
 
 ## rajout des résultats de l'année (non qualifiés)
@@ -139,7 +140,7 @@ plot_grid(ploti2m2,plotaspt,plotpolyv,plotovov)
 
 ## Chroniques par départements
 
-
+# faire une procedure pour automatiser les visualisations
 
 
 
